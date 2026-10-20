@@ -1,0 +1,28 @@
+name: tests
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python -m unittest discover -s tests
+      - run: |
+          python examples/make_toy_data.py
+          python scripts/freeze.py lock config/frozen_config.example.json
+          python scripts/freeze.py verify config/frozen_config.example.json
+          python scripts/parse_outputs.py config/frozen_config.example.json examples/raw_outputs.csv examples/parsed_demo.csv
+          python scripts/agreement.py examples/annotations.csv
+          python scripts/evaluate.py examples/gold.csv examples/predictions.csv
+          python scripts/compare.py examples/gold.csv examples/predictions.csv --contrast classes --threshold 0.10 --boot 1000
+          python scripts/route.py examples/gold.csv examples/members.csv
+          python examples/governance/make_governance_data.py
+          python scripts/evaluate.py examples/governance/gold.csv examples/governance/predictions.csv --groups examples/governance/groups.csv
+          python scripts/route.py examples/governance/gold.csv examples/governance/members.csv
+          python examples/multilabel/make_multilabel_data.py
+          python scripts/agreement.py examples/multilabel/annotations.csv
+          python scripts/evaluate.py examples/multilabel/gold.csv examples/multilabel/predictions.csv
+          python scripts/compare.py examples/multilabel/gold.csv examples/multilabel/predictions.csv --contrast configs --threshold 0.10 --clusters examples/multilabel/clusters.csv --boot 1000
+          python scripts/route.py examples/multilabel/gold.csv examples/multilabel/members.csv

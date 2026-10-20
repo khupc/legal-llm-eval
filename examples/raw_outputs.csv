@@ -1,0 +1,5 @@
+item_id,config,raw_output
+item000,zero_shot,"reasoning...
+Answer: Lease"
+item001,zero_shot,"字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字字"
+item002,zero_shot,"no answer line"

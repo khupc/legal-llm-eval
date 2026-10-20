@@ -1,0 +1,20 @@
+{
+  "experiment_id": "exp_v1",
+  "frozen_on": "YYYY-MM-DD",
+  "labels": ["loan", "lease", "sale"],
+  "models": [
+    {"name": "model-name", "version": "exact-version-string", "accessed_via": "API"}
+  ],
+  "generation": {"temperature": 0, "max_output_tokens": 1024},
+  "prompts": {
+    "zero_shot": "config/prompts/zero_shot_v1.txt",
+    "few_shot_cot": "config/prompts/few_shot_cot_v1.txt"
+  },
+  "parser": {
+    "rule": "last line must match the answer pattern; anything else is unparseable",
+    "answer_pattern": "^Answer:\\s*(loan|lease|sale)\\s*$",
+    "case_insensitive": true,
+    "ambiguity_policy": "strict"
+  },
+  "retry_policy": "retry only on API errors, never on content; log every retry"
+}
